@@ -2,6 +2,7 @@
 import './App.css';
 import ShapeEditor from './components/ShapeEditor';
 import ShapeList from './components/ShapeList';
+import PointPlacer from './components/PointPlacer';
 import { useState } from 'react';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
 
   const addShape = ({ start, cp1, cp2, end }) => {
     const newShapes = [...shapes];
-    newShapes.push({ start, cp1, cp2, end });
+    newShapes.push({ start, cp1, cp2, end, weight: 1 });
     setShapes(newShapes);
   }
   const startEditing = (id) => {
@@ -38,15 +39,22 @@ function App() {
   const shapeSelected = (index) => {
     setShapeIndex(index);
   }
+  const onUpdateWeight = (weight) => {
+    const newShapes = [...shapes];
+    newShapes[shapeIndex].weight = Number(weight);
+    setShapes(newShapes);
+  }
   const baseShape = {
     start: {x: 10, y: 10},
     cp1: {x: 300, y: 10},
     cp2: {x: 10, y: 300},
     end: {x: 300, y: 300},
+    weight: 1
   }
   return (
     <div className="App">
       <div className="shape-container">
+        {shapes.length ? <PointPlacer count={300} shapes={shapes} /> : ''}
         {shapes.map((item, index) => <ShapeEditor shape={item} onStartEditing={startEditing} active={index === shapeIndex} />)} 
         <div className="drag-layer" style={{display: editLayerDisplay}} onMouseMove={mouseMoved} onMouseUp={endEditing}></div>
       </div>
@@ -54,7 +62,7 @@ function App() {
       <div className="util-nav">
         <button onClick={addChapeCliked}>Add Shape</button>
       </div>
-      <ShapeList onShapeSelected={shapeSelected} shapes={shapes} index={shapeIndex} />
+      <ShapeList onShapeSelected={shapeSelected} onUpdateWeight={onUpdateWeight} shapes={shapes} index={shapeIndex} />
     </div>
   );
 }

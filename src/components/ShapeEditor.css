@@ -1,0 +1,16 @@
+.shape-editor{
+    position:fixed;
+    top: 0;
+    left:0;
+    width: 85vw;
+    height: 95vh;
+}
+.shape-editor.inactive-editor{
+    pointer-events: none;
+    opacity: .5;
+}
+.shape-editor path{
+    fill: transparent;
+    stroke: #000000;
+    pointer-events: none;
+}
